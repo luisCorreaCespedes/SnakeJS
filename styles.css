@@ -1,0 +1,22 @@
+/*General game styles*/
+body {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Board styles*/
+canvas {
+    border:rgb(128, 128, 128);
+    border-style:solid;
+    border-radius: 2%;
+}
+
+#board {
+    background-color:rgb(219, 214, 214);
+    width: 400px;
+    height: 400px;
+}
