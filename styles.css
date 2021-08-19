@@ -14,3 +14,8 @@ canvas {
     border-style: solid;
     border-radius: 1%;
 }
+
+#board {
+    padding-left: 2px;
+    padding-top: 1px;
+}

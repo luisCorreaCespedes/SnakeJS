@@ -52,6 +52,16 @@ function keyDown(event) {
         yVelocity = 1;
         xVelocity = 0;
     }
+    // Move left
+    if(event.keyCode == 37) {
+        yVelocity = 0;
+        xVelocity = -1;
+    }
+    // Move right
+    if(event.keyCode == 39) {
+        yVelocity = 0;
+        xVelocity = 1;
+    }
 }
 
 drawGame();
