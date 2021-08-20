@@ -27,18 +27,81 @@ let yVelocity = 0;
 
 let score = 0;
 
+const glupSound = new Audio('./resources/music/glup.mp3');
+const overSound = new Audio('./resources/music/over.mp3');
+
 // Events
 document.body.addEventListener('keydown', keyDown);
 
 // Game loop
 function drawGame() {
-    clearScreen();
     positionPlayer();
+    let result = isGameOver();
+    if(result) {
+        return;
+    }
+    clearScreen();
     fruitCollision();
     drawFruit();
     drawPlayer();
     drawScore();
+
+    // Levels
+    if(score >= 5) {
+        speed = 8;
+    }
+    else if(score >= 10) {
+        speed = 9;
+    }
+    else if(score >= 15) {
+        speed = 10;
+    }
+    else if(score >= 20) {
+        speed = 11;
+    }
+
     setTimeout(drawGame, 1000/speed);
+}
+
+// Game over
+function isGameOver() {
+    let gameOver = false;
+    if(yVelocity === 0 && xVelocity === 0) {
+        return false;
+    }
+    // Walls collisions
+    if(headX < 0) {
+        gameOver = true;
+    }
+    else if(headX === tileCount) {
+        gameOver = true;
+    }
+    else if(headY < 0) {
+        gameOver = true;
+    }
+    else if(headY === tileCount) {
+        gameOver = true;
+    }
+    // Player collisions
+    for(let i=0; i < snakeParts.length; i++) {
+        let part = snakeParts[i];
+        if(part.x === headX && part.y === headY) {
+            gameOver = true;
+            break;
+        }
+    }
+
+    if(gameOver) {
+        ctx.fillStyle = 'black';
+        ctx.font = '50px Verdana';
+        if(gameOver) {
+            ctx.fillStyle = 'black';
+            ctx.font = '50px Verdana';
+            ctx.fillText('Game Over!', canvas.width / 7, canvas.height / 2);
+            overSound.play();
+        }
+    }
+    return gameOver;
 }
 
 // Clear screen
@@ -51,7 +114,7 @@ function clearScreen() {
 function drawScore() {
     ctx.fillStyle = 'black';
     ctx.font = '15px Verdana';
-    ctx.fillText('Score: ' + score, canvas.width-85, 15);
+    ctx.fillText('Score: ' + score, canvas.width-90, 15);
 }
 
 // Draw player
@@ -90,13 +153,14 @@ function fruitCollision() {
         fruitY = Math.floor(Math.random() * tileCount);
         tailLenght++;
         score++;
+        glupSound.play();
     }
 }
 
 // Move player
 function keyDown(event) {
     // Move up
-    if(event.keyCode == 38) {
+    if(event.keyCode == 38 || event.keyCode == 87) {
         if(yVelocity == 1) {
             return;
         }
@@ -104,7 +168,7 @@ function keyDown(event) {
         xVelocity = 0;
     }
     // Move down
-    if(event.keyCode == 40) {
+    if(event.keyCode == 40 || event.keyCode == 83) {
         if(yVelocity == -1) {
             return;
         }
@@ -112,7 +176,7 @@ function keyDown(event) {
         xVelocity = 0;
     }
     // Move left
-    if(event.keyCode == 37) {
+    if(event.keyCode == 37 || event.keyCode == 65) {
         if(xVelocity == 1) {
             return;
         }
@@ -120,7 +184,7 @@ function keyDown(event) {
         xVelocity = -1;
     }
     // Move right
-    if(event.keyCode == 39) {
+    if(event.keyCode == 39 || event.keyCode == 68) {
         if(xVelocity == -1) {
             return;
         }
