@@ -9,7 +9,7 @@ class PlayerBody {
     }
 }
 
-let speed = 7;
+let speed = 6;
 let tileCount = 20;
 let tileSize = canvas.width / tileCount - 2;
 
@@ -26,9 +26,12 @@ let xVelocity = 0;
 let yVelocity = 0;
 
 let score = 0;
+let level = 1;
 
 const glupSound = new Audio('./resources/music/glup.mp3');
 const overSound = new Audio('./resources/music/over.mp3');
+let bgn = new Image();
+bgn.src = './resources/img/bgn.png';
 
 // Events
 document.body.addEventListener('keydown', keyDown);
@@ -45,19 +48,36 @@ function drawGame() {
     drawFruit();
     drawPlayer();
     drawScore();
+    drawLevel();
 
     // Levels
-    if(score >= 5) {
+    if(score > 10) {
+        speed = 7;
+        level = 2;
+    }
+    if(score > 20) {
         speed = 8;
+        level = 3;
     }
-    else if(score >= 10) {
+    if(score > 30) {
         speed = 9;
+        level = 4;
     }
-    else if(score >= 15) {
+    if(score > 40) {
         speed = 10;
+        level = 5;
     }
-    else if(score >= 20) {
+    if(score > 50) {
         speed = 11;
+        level = 6;
+    }
+    if(score > 60) {
+        speed = 12;
+        level = 7;
+    }
+    if(score > 70) {
+        speed = 13;
+        level = 'endless';
     }
 
     setTimeout(drawGame, 1000/speed);
@@ -115,6 +135,13 @@ function drawScore() {
     ctx.fillStyle = 'black';
     ctx.font = '15px Verdana';
     ctx.fillText('Score: ' + score, canvas.width-90, 15);
+}
+
+// Draw level
+function drawLevel() {
+    ctx.fillStyle = 'black';
+    ctx.font = '15px Verdana';
+    ctx.fillText('Level ' + level, canvas.width-398, 15);
 }
 
 // Draw player
