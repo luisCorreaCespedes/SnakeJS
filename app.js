@@ -30,8 +30,6 @@ let level = 1;
 
 const glupSound = new Audio('./resources/music/glup.mp3');
 const overSound = new Audio('./resources/music/over.mp3');
-let bgn = new Image();
-bgn.src = './resources/img/bgn.png';
 
 // Events
 document.body.addEventListener('keydown', keyDown);
