@@ -22,8 +22,14 @@ let tailLenght = 2;
 let fruitX = 5;
 let fruitY = 5;
 
+let inputXVelocity = 0;
+let inputYVelocity = 0;
+
 let xVelocity = 0;
 let yVelocity = 0;
+
+let previousXVelocity = 0;
+let previousYVelocity = 0;
 
 let score = 0;
 let level = 1;
@@ -36,9 +42,30 @@ document.body.addEventListener('keydown', keyDown);
 
 // Game loop
 function drawGame() {
+    xVelocity = inputXVelocity;
+    yVelocity = inputYVelocity;
+    // Right
+    if(previousXVelocity === 1 && xVelocity === -1) {
+        xVelocity = previousXVelocity;
+    }
+    // Left
+    if(previousXVelocity === -1 && xVelocity === 1) {
+        xVelocity = previousXVelocity;
+    }
+    // Up
+    if(previousYVelocity === -1 && yVelocity === 1) {
+        yVelocity = previousYVelocity;
+    }
+    // Down
+    if(previousYVelocity === 1 && yVelocity === -1) {
+        yVelocity = previousYVelocity;
+    }
+    previousXVelocity = xVelocity;
+    previousYVelocity = yVelocity;
     positionPlayer();
     let result = isGameOver();
     if(result) {
+        document.body.removeEventListener('keydown', keyDown);
         return;
     }
     clearScreen();
@@ -155,7 +182,7 @@ function drawPlayer() {
     while(snakeParts.length > tailLenght) {
         snakeParts.shift();
     }
-    ctx.fillStyle = 'green';
+    ctx.fillStyle = '#235946';
     ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
 }
 
@@ -186,35 +213,23 @@ function fruitCollision() {
 function keyDown(event) {
     // Move up
     if(event.keyCode == 38 || event.keyCode == 87) {
-        if(yVelocity == 1) {
-            return;
-        }
-        yVelocity = -1;
-        xVelocity = 0;
+        inputYVelocity = -1;
+        inputXVelocity = 0;
     }
     // Move down
     if(event.keyCode == 40 || event.keyCode == 83) {
-        if(yVelocity == -1) {
-            return;
-        }
-        yVelocity = 1;
-        xVelocity = 0;
+        inputYVelocity = 1;
+        inputXVelocity = 0;
     }
     // Move left
     if(event.keyCode == 37 || event.keyCode == 65) {
-        if(xVelocity == 1) {
-            return;
-        }
-        yVelocity = 0;
-        xVelocity = -1;
+        inputYVelocity = 0;
+        inputXVelocity = -1;
     }
     // Move right
     if(event.keyCode == 39 || event.keyCode == 68) {
-        if(xVelocity == -1) {
-            return;
-        }
-        yVelocity = 0;
-        xVelocity = 1;
+        inputYVelocity = 0;
+        inputXVelocity = 1;
     }
 }
 
